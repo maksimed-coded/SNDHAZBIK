@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Главная страница</title>
+    <title>Главный сайт</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -16,34 +16,106 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
     <script src="https://soundtagtutorial.vercel.app/assets/js/XAlert.js@cache=1742053199"></script>
     <link rel="stylesheet" href="assets/css/app.css@cache=1742053199.css"/>
+    <link rel="icon" type="image/svg+xml" href="favicon.ico" />
     <style>
-        body {
-            background: linear-gradient(45deg, #2d3748, #1a202c, #2d3748);
-            animation: gradientShift 10s ease infinite;
-            background-size: 200% 200%;
+        :root {
+            --bg-dark: #0f172a;
+            --bg-darker: #020617;
+            --bg-gradient: linear-gradient(45deg, #0f172a, #020617, #0f172a);
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --accent-color: #7c3aed;
+            --button-bg: #7c3aed;
+            --button-hover: #6d28d9;
+            --button-text: #ffffff;
+            --card-bg: #1e293b;
+            --card-border: #334155;
         }
+
+        body {
+            background: var(--bg-gradient);
+            animation: gradientShift 15s ease infinite;
+            background-size: 200% 200%;
+            color: var(--text-primary);
+            font-family: 'Roboto', sans-serif;
+        }
+        
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        .animate-general { animation: fadeInUp 1s ease-out; }
+        
+        .animate-general { 
+            animation: fadeInUp 1s ease-out, pulseContainer 6s ease-in-out infinite; 
+        }
+        
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .button-hover { transition: all 0.3s ease; }
-        .button-hover:hover { transform: scale(1.05) rotate(2deg); box-shadow: 0 5px 15px rgba(163,191,250,0.5); }
-        .button-hover:active { transform: scale(0.95) rotate(-2deg); opacity: 0.8; }
+        
+        @keyframes pulseContainer {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+            100% { transform: scale(1); }
+        }
+        
+        .button-hover {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            border: none;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .button-hover:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+            background-color: var(--button-hover);
+        }
+        
+        .button-hover:active {
+            transform: translateY(1px) scale(0.98);
+        }
+        
+        .button-hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: 0.6s;
+        }
+        
+        .button-hover:hover::before {
+            left: 100%;
+        }
+        
+        .fade-text {
+            animation: fadeText 3s ease-in-out infinite;
+            color: var(--text-secondary);
+        }
+        
+        @keyframes fadeText {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
         
         /* Общие стили для всех кнопок */
         .uniform-button {
-            width: 250px;
+            width: 280px;
             height: 60px;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -53,8 +125,8 @@
         
         /* Стили для обычных кнопок */
         .standard-button {
-            background-color: #a3bffa;
-            color: #1a202c;
+            background-color: var(--button-bg);
+            color: var(--button-text);
             font-size: 18px;
             padding: 12px 24px;
         }
@@ -62,29 +134,40 @@
         /* Стили для кнопки с изображением */
         .image-button {
             padding: 0;
+            background: transparent;
+            border: 1px solid var(--card-border);
         }
+        
         .image-button img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s ease;
         }
+        
+        .image-button:hover img {
+            transform: scale(1.05);
+        }
+        
         .button-content {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, transparent 100%);
             color: white;
-            padding: 8px 12px;
+            padding: 12px;
             text-align: center;
-            backdrop-filter: blur(3px);
+            backdrop-filter: blur(4px);
         }
+        
         .button-title {
             font-weight: 600;
             font-size: 1rem;
             margin: 0 0 2px;
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
+        
         .button-subtitle {
             font-size: 0.8rem;
             opacity: 0.9;
@@ -96,6 +179,11 @@
         .button-icon {
             width: 24px;
             height: 24px;
+            transition: transform 0.3s ease;
+        }
+        
+        .button-hover:hover .button-icon {
+            transform: rotate(5deg) scale(1.1);
         }
         
         /* Стиль для лейбла "Скоро!" */
@@ -105,34 +193,81 @@
             width: 190px;
             left: -70px;
             top: 10px;
-            background: white;
-            color: #1a202c;
+            background: var(--accent-color);
+            color: white;
             rotate: -45deg;
-            font-size: 9px;
+            font-size: 10px;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
             animation: pulse 2s infinite;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
+        
         @keyframes pulse {
-            0% { opacity: 0.7; }
-            50% { opacity: 1; }
-            100% { opacity: 0.7; }
+            0% { opacity: 0.8; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0.8; transform: scale(0.98); }
+        }
+        
+        /* Toast уведомления */
+        #toast {
+            z-index: 9999;
+        }
+        
+        #toast div {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
+        /* Заголовки */
+        h1 {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Анимация для заголовка */
+        .title-pulse {
+            animation: titlePulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes titlePulse {
+            0% { opacity: 0.9; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+            50% { opacity: 1; text-shadow: 0 4px 8px rgba(124, 58, 237, 0.3); }
+            100% { opacity: 0.9; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 640px) {
+            .uniform-button {
+                width: 100%;
+                max-width: 280px;
+            }
+            
+            #main-page, #sounds-page {
+                width: 90%;
+                margin-top: 2rem;
+            }
         }
     </style>
 </head>
-<body class="min-h-screen text-gray-200 select-none cursor-pointer overflow-hidden">
-    <div id="toast" class="z-[9999] fixed left-0 right-0 top-6 justify-center hidden animate-pulse">
-        <div class="bg-[#1E1E1E] rounded-lg px-5 py-3 ring-2 ring-inset ring-[#2d2d2d] shadow-xl">
+<body class="min-h-screen select-none cursor-default overflow-x-hidden">
+    <div id="toast" class="fixed left-0 right-0 top-6 justify-center hidden animate-pulse">
+        <div class="rounded-xl px-5 py-3 shadow-xl">
             <div class="flex gap-2.5 items-center">
-                <p id="toast__text" class="text-medium text-white">Недействительный запрос</p>
+                <p id="toast__text" class="text-medium">Недействительный запрос</p>
             </div>
         </div>
     </div>
-    <div class="flex flex-col mx-auto justify-center text-center mt-36 animate-general w-[75%]">
-        <h1 class="text-[28px] font-bold text-gray-100 animate-pulse">САЙТ КАНАЛА @soundtag_hasbik</h1>
-        <div class="flex flex-col items-center mt-[20px] gap-[15px]">
+
+    <!-- Главная страница -->
+    <div id="main-page" class="flex flex-col mx-auto justify-center text-center mt-24 animate-general w-[85%] max-w-2xl">
+        <h1 class="text-3xl md:text-4xl font-bold mb-6 title-pulse">САЙТ КАНАЛА @soundtag_hasbik</h1>
+        <div class="flex flex-col items-center mt-2 gap-4">
             <!-- Telegram -->
             <a href="https://t.me/soundtag_hasbik" class="uniform-button standard-button button-hover">
                 <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -148,41 +283,122 @@
             </a>
             
             <!-- Звуки -->
-            <a href="sounds.html" class="uniform-button standard-button button-hover">
-                <span>Звуки</span>
+            <a href="#sounds-page" class="uniform-button standard-button button-hover" onclick="showPage('sounds-page')">
+                <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M3 15a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                    <path d="M13 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                    <path d="M9 12v-7h8a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-8"></path>
+                </svg>
+                <span class="ml-3">Звуки</span>
             </a>
             
             <!-- Кнопка с изображением -->
             <a href="https://t.me/HUANANZHIii" target="_blank" class="uniform-button image-button button-hover">
-    <img src="https://i.postimg.cc/8kx6yj1V/Picsart-25-05-03-18-53-49-964.png" alt="Tgk" loading="lazy" decoding="async">
-</a>
+                <img src="https://i.postimg.cc/8kx6yj1V/Picsart-25-05-03-18-53-49-964.png" alt="Tgk" loading="lazy" decoding="async">
+            </a>
             
             <!-- Донат -->
             <a href="https://vtb.paymo.ru/collect-money/qr/?transaction=947482c1-bc83-4068-94fc-d1fca0742c56" class="uniform-button standard-button button-hover">
-                <img class="button-icon" src="https://i.postimg.cc/x1tJZQfK/images-Photoroom.png" alt="Донат">
+                <img src="https://i.postimg.cc/x1tJZQfK/images-Photoroom.png" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z"></path>
+                </svg>
                 <span class="ml-3">Донат</span>
             </a>
+        </div>
+        <p class="mt-8 text-sm fade-text">У нас нет других сайтов и соцсетей, ТОЛЬКО ТГК и TikTok.</p>
+    </div>
+
+    <!-- Страница звуков -->
+    <div id="sounds-page" class="flex flex-col mx-auto justify-center text-center mt-8 animate-general w-[85%] max-w-2xl" style="display: none;">
+        <h1 class="text-3xl md:text-4xl font-bold mb-6">ЗВУКИ</h1>
+        <div class="flex flex-col items-center gap-4">
+            <a href="#main-page" class="uniform-button standard-button button-hover" onclick="showPage('main-page')">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                </svg>
+                <span class="ml-3">Назад</span>
+            </a>
             
-            <!-- Авторизация -->
-            <a href="rabota.html" class="uniform-button standard-button button-hover">
-                <span class="soon-label">Скоро!</span>
-                <span>Авторизация</span>
+            <a href="https://t-alpha-seven.vercel.app/" class="uniform-button standard-button button-hover">
+                <span>Творожок</span>
+            </a>
+            
+            <a href="https://hazbiktag.vercel.app/" class="uniform-button standard-button button-hover">
+                <span>Стоны</span>
+            </a>
+            
+            <a href="https://drochetnapor.vercel.app/" class="uniform-button standard-button button-hover">
+                <span>Устал дро*ить на обычное пор**о</span>
+            </a>
+            
+            <a href="https://ponos-pink.vercel.app/" class="uniform-button standard-button button-hover">
+                <span>Звук из туалета</span>
+            </a>
+            
+            <a href="https://pr-otag.vercel.app/" class="uniform-button standard-button button-hover">
+                <span>Звук меняющийся с голосованием</span>
+            </a>
+            
+            <a href="https://bezplatnysyr.vercel.app/" class="uniform-button standard-button button-hover">
+                <span>Получить 100 рублей!</span>
             </a>
         </div>
-        <p class="mt-6 text-xs text-gray-400 animate-bounce">У нас нет других сайтов и соцсетей, ТОЛЬКО ТГК и TikTok.</p>
+        <p class="mt-8 text-sm fade-text">У нас нет других сайтов и соцсетей, ТОЛЬКО ТГК и TikTok.</p>
     </div>
 
     <script>
+        // Функция для переключения между страницами
+        function showPage(pageId) {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('sounds-page').style.display = 'none';
+            
+            document.getElementById(pageId).style.display = 'flex';
+            window.scrollTo(0, 0);
+            
+            // Добавляем анимацию при переключении
+            document.getElementById(pageId).classList.remove('animate-general');
+            void document.getElementById(pageId).offsetWidth; // Trigger reflow
+            document.getElementById(pageId).classList.add('animate-general');
+        }
+
         // Отключение правой кнопки мыши
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
+            showToast('Контекстное меню отключено');
         });
 
         // Отключение клавиши F12
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'F12') {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
                 e.preventDefault();
+                showToast('Инспектор отключен');
             }
+        });
+
+        // Функция для показа toast уведомлений
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast__text');
+            
+            toastText.textContent = message;
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+            
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex');
+            }, 3000);
+        }
+
+        // Инициализация - показываем главную страницу
+        document.addEventListener('DOMContentLoaded', function() {
+            showPage('main-page');
+            
+            // Добавляем небольшой delay для более плавного появления
+            setTimeout(() => {
+                document.body.classList.remove('cursor-default');
+                document.body.classList.add('cursor-pointer');
+            }, 1000);
         });
     </script>
 </body>
