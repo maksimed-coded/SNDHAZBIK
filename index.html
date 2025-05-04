@@ -19,17 +19,17 @@
     <link rel="icon" type="image/svg+xml" href="favicon.ico" />
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --bg-darker: #020617;
-            --bg-gradient: linear-gradient(45deg, #0f172a, #020617, #0f172a);
-            --text-primary: #e2e8f0;
-            --text-secondary: #94a3b8;
-            --accent-color: #7c3aed;
-            --button-bg: #7c3aed;
-            --button-hover: #6d28d9;
+            --bg-dark: #111827;
+            --bg-darker: #0a0f1a;
+            --bg-gradient: linear-gradient(135deg, #1f2937, #111827, #0a0f1a);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --accent-color: #3b82f6;
+            --button-bg: #3b82f6;
+            --button-hover: #2563eb;
             --button-text: #ffffff;
-            --card-bg: #1e293b;
-            --card-border: #334155;
+            --card-bg: #1f2937;
+            --card-border: #374151;
         }
 
         body {
@@ -74,7 +74,7 @@
         
         .button-hover:hover {
             transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
             background-color: var(--button-hover);
         }
         
@@ -154,7 +154,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, transparent 100%);
+            background: linear-gradient(to top, rgba(31, 41, 55, 0.9) 0%, transparent 100%);
             color: white;
             padding: 12px;
             text-align: center;
@@ -237,7 +237,7 @@
         
         @keyframes titlePulse {
             0% { opacity: 0.9; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-            50% { opacity: 1; text-shadow: 0 4px 8px rgba(124, 58, 237, 0.3); }
+            50% { opacity: 1; text-shadow: 0 4px 8px rgba(59, 130, 246, 0.3); }
             100% { opacity: 0.9; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
         }
         
@@ -248,10 +248,91 @@
                 max-width: 280px;
             }
             
-            #main-page, #sounds-page {
+            #main-page, #sounds-page, #tgk-page {
                 width: 90%;
                 margin-top: 2rem;
             }
+        }
+
+        /* Стили для страницы подписки на ТГК */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        #tgk-page {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            margin-top: 2rem;
+        }
+        
+        .qr-container {
+            margin: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            border: 10px solid white;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .qr-note {
+            margin-top: 10px;
+            color: #a0a0a0;
+        }
+        
+        .telegram-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--button-bg);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .telegram-btn:hover {
+            background-color: var(--button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .telegram-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
         }
     </style>
 </head>
@@ -293,7 +374,7 @@
             </a>
             
             <!-- Кнопка с изображением -->
-            <a href="https://t.me/HUANANZHIii" target="_blank" class="uniform-button image-button button-hover">
+            <a href="#tgk-page" class="uniform-button image-button button-hover" onclick="showPage('tgk-page')">
                 <img src="https://i.postimg.cc/8kx6yj1V/Picsart-25-05-03-18-53-49-964.png" alt="Tgk" loading="lazy" decoding="async">
             </a>
             
@@ -346,11 +427,39 @@
         <p class="mt-8 text-sm fade-text">У нас нет других сайтов и соцсетей, ТОЛЬКО ТГК и TikTok.</p>
     </div>
 
+    <!-- Страница подписки на ТГК -->
+    <div id="tgk-page" class="flex flex-col mx-auto justify-center text-center mt-8 animate-general w-[85%] max-w-2xl" style="display: none;">
+        <div class="stars" id="stars"></div>
+        <h1 class="text-3xl md:text-4xl font-bold mb-6">Подписка на ТГК</h1>
+        <p>Присоединяйтесь к нашему каналу, чтобы быть в курсе всех обновлений и новых проектов!</p>
+        
+        <div class="qr-container">
+            <!-- Замените ссылку в src на ваш QR-код -->
+            <img class="qr-code" src="https://iimg.su/i/LADxE8" alt="QR код для Telegram">
+            <div class="qr-note">Отсканируйте QR-код чтобы перейти в Telegram</div>
+        </div>
+        
+        <a href="https://t.me/HUANANZHIii" class="telegram-btn" target="_blank">
+            <svg class="telegram-icon" viewBox="0 0 24 24" fill="white">
+                <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z"/>
+            </svg>
+            Подписаться в Telegram
+        </a>
+
+        <a href="#main-page" class="uniform-button standard-button button-hover mt-6" onclick="showPage('main-page')">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"></path>
+            </svg>
+            <span class="ml-3">Назад</span>
+        </a>
+    </div>
+
     <script>
         // Функция для переключения между страницами
         function showPage(pageId) {
             document.getElementById('main-page').style.display = 'none';
             document.getElementById('sounds-page').style.display = 'none';
+            document.getElementById('tgk-page').style.display = 'none';
             
             document.getElementById(pageId).style.display = 'flex';
             window.scrollTo(0, 0);
@@ -359,6 +468,29 @@
             document.getElementById(pageId).classList.remove('animate-general');
             void document.getElementById(pageId).offsetWidth; // Trigger reflow
             document.getElementById(pageId).classList.add('animate-general');
+
+            // Если это страница ТГК, создаем звезды
+            if (pageId === 'tgk-page') {
+                createStars();
+            }
+        }
+
+        // Создание звёзд на фоне
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            starsContainer.innerHTML = '';
+            
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                starsContainer.appendChild(star);
+            }
         }
 
         // Отключение правой кнопки мыши
