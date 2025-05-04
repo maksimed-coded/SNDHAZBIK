@@ -248,7 +248,7 @@
                 max-width: 280px;
             }
             
-            #main-page, #sounds-page, #tgk-page {
+            #main-page, #sounds-page, #tgk-page, #sound-frame-container {
                 width: 90%;
                 margin-top: 2rem;
             }
@@ -334,6 +334,56 @@
             height: 24px;
             margin-right: 8px;
         }
+
+        /* Стили для контейнера с iframe */
+        #sound-frame-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            margin-top: 2rem;
+            padding: 1rem;
+        }
+
+        #sound-frame {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            background-color: var(--bg-dark);
+        }
+
+        .frame-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .frame-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .close-frame-btn {
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-frame-btn:hover {
+            background-color: var(--button-hover);
+        }
     </style>
 </head>
 <body class="min-h-screen select-none cursor-default overflow-x-hidden">
@@ -400,27 +450,27 @@
                 <span class="ml-3">Назад</span>
             </a>
             
-            <a href="https://t-alpha-seven.vercel.app/" class="uniform-button standard-button button-hover">
+            <a href="#" class="uniform-button standard-button button-hover" onclick="showSoundFrame('Творожок', 'https://t-alpha-seven.vercel.app/')">
                 <span>Творожок</span>
             </a>
             
-            <a href="https://hazbiktag.vercel.app/" class="uniform-button standard-button button-hover">
+            <a href="#" class="uniform-button standard-button button-hover" onclick="showSoundFrame('Стоны', 'https://hazbiktag.vercel.app/')">
                 <span>Стоны</span>
             </a>
             
-            <a href="https://drochetnapor.vercel.app/" class="uniform-button standard-button button-hover">
+            <a href="#" class="uniform-button standard-button button-hover" onclick="showSoundFrame('Устал дро*ить на обычное пор**о', 'https://drochetnapor.vercel.app/')">
                 <span>Устал дро*ить на обычное пор**о</span>
             </a>
             
-            <a href="https://ponos-pink.vercel.app/" class="uniform-button standard-button button-hover">
+            <a href="#" class="uniform-button standard-button button-hover" onclick="showSoundFrame('Звук из туалета', 'https://ponos-pink.vercel.app/')">
                 <span>Звук из туалета</span>
             </a>
             
-            <a href="https://pr-otag.vercel.app/" class="uniform-button standard-button button-hover">
+            <a href="#" class="uniform-button standard-button button-hover" onclick="showSoundFrame('Звук меняющийся с голосованием', 'https://pr-otag.vercel.app/')">
                 <span>Звук меняющийся с голосованием</span>
             </a>
             
-            <a href="https://bezplatnysyr.vercel.app/" class="uniform-button standard-button button-hover">
+            <a href="#" class="uniform-button standard-button button-hover" onclick="showSoundFrame('Получить 100 рублей!', 'https://bezplatnysyr.vercel.app/')">
                 <span>Получить 100 рублей!</span>
             </a>
         </div>
@@ -454,12 +504,22 @@
         </a>
     </div>
 
+    <!-- Контейнер для отображения звуков в iframe -->
+    <div id="sound-frame-container" style="display: none;">
+        <div class="frame-header">
+            <div class="frame-title" id="sound-frame-title"></div>
+            <button class="close-frame-btn" onclick="hideSoundFrame()">Закрыть</button>
+        </div>
+        <iframe id="sound-frame" allow="autoplay"></iframe>
+    </div>
+
     <script>
         // Функция для переключения между страницами
         function showPage(pageId) {
             document.getElementById('main-page').style.display = 'none';
             document.getElementById('sounds-page').style.display = 'none';
             document.getElementById('tgk-page').style.display = 'none';
+            document.getElementById('sound-frame-container').style.display = 'none';
             
             document.getElementById(pageId).style.display = 'flex';
             window.scrollTo(0, 0);
@@ -473,6 +533,26 @@
             if (pageId === 'tgk-page') {
                 createStars();
             }
+        }
+
+        // Функция для отображения звука в iframe
+        function showSoundFrame(title, url) {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('sounds-page').style.display = 'none';
+            document.getElementById('tgk-page').style.display = 'none';
+            
+            document.getElementById('sound-frame-title').textContent = title;
+            document.getElementById('sound-frame').src = url;
+            document.getElementById('sound-frame-container').style.display = 'flex';
+            
+            window.scrollTo(0, 0);
+        }
+
+        // Функция для скрытия iframe
+        function hideSoundFrame() {
+            document.getElementById('sound-frame-container').style.display = 'none';
+            document.getElementById('sound-frame').src = '';
+            showPage('sounds-page');
         }
 
         // Создание звёзд на фоне
